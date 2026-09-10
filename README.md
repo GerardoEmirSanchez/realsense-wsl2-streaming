@@ -185,7 +185,3 @@ explorer.exe capture
 ```
 Abre `captura_cajon_000.jpg` con el visor de imágenes de Windows y confirma que mide $640 \times 480$ píxeles.
 
-
-
-explorer.exe capture
-```
