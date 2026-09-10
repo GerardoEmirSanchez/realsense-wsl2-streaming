@@ -9,13 +9,13 @@ Pasos para limpiar el entorno de trabajo actual y regresar al estado inicial sin
 
 ### 1. En la terminal de Ubuntu (WSL)
 ```bash
-# Desactivar entorno virtual si está activo
+# Desactivar entorno si está activo
 deactivate 2>/dev/null
 
-# Detener procesos de Python residuales
+# Detener cualquier proceso de Python residual
 killall -9 python python3 2>/dev/null
 
-# Eliminar entorno virtual, scripts y capturas previas
+# Eliminar el entorno virtual, scripts y capturas generadas
 cd ~
 rm -rf vision_env capture
 rm -f s1_realsense_pixeles.py visor_web_camara.py
@@ -40,11 +40,11 @@ winget install --interactive --exact dorssel.usbipd-win
 ### 2. Enlazar la cámara Intel RealSense a WSL
 Con la cámara conectada a un puerto USB 3.0:
 
-1. Listar dispositivos y ubicar el `BUSID` de la cámara:
+1. Lista los dispositivos USB conectados para localizar el `BUSID` de la RealSense:
    ```powershell
    usbipd list
    ```
-2. Compartir el puerto (solo la primera vez):
+2. Comparte el puerto del dispositivo con WSL (solo se requiere una vez):
    ```powershell
    usbipd bind --busid <TU-BUSID>
    ```
@@ -57,7 +57,9 @@ Con la cámara conectada a un puerto USB 3.0:
 
 ## Fase 2: Configuración en Ubuntu (WSL2)
 
-Abre la terminal de **Ubuntu**:
+Toca la tecla `Windows` y escribe `Ubuntu` y ábrelo como **administrador**
+
+En la terminal de **Ubuntu**:
 
 ### 1. Dependencias del sistema y soporte USB
 ```bash
@@ -79,8 +81,13 @@ sudo chmod -R 777 /dev/bus/usb/
 
 ### 4. Entorno virtual de Python
 ```bash
+# Crear entorno virtual limpio
 python3 -m venv ~/vision_env
+
+# Activar el entorno virtual
 source ~/vision_env/bin/activate
+
+# Actualizar pip e instalar librerías necesarias
 pip install --upgrade pip
 pip install opencv-python numpy pyrealsense2 flask
 ```
@@ -89,9 +96,10 @@ pip install opencv-python numpy pyrealsense2 flask
 
 ## Fase 3: Script de Captura y Streaming (`visor_web_camara.py`)
 
-Crea el archivo con el siguiente contenido:
+Con el entorno virtual activo (`vision_env`), genera el script ejecutando el siguiente bloque en la terminal:
 
-```python
+```bash
+cat << 'EOF' > ~/visor_web_camara.py
 from flask import Flask, Response
 import cv2
 import numpy as np
@@ -114,10 +122,11 @@ def flujo_video():
         if not color:
             continue
 
+        # Convertir buffer nativo a ndarray de NumPy
         frame = np.asanyarray(color.get_data())
         h, w, _ = frame.shape
 
-        # Elementos didácticos: Centro óptico y ROI
+        # Elementos didácticos: Centro óptico y ROI del cajón
         y_c, x_c = h // 2, w // 2
         cv2.circle(frame, (x_c, y_c), 6, (0, 0, 255), -1)
         
@@ -128,10 +137,10 @@ def flujo_video():
         cv2.putText(frame, f"Centro Optico ({x_c},{y_c})", (x_c + 10, y_c), 
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
 
-        # Guardar último frame
+        # Persistencia continua del último frame (Muestra A6)
         cv2.imwrite("capture/captura_cajon_000.jpg", frame)
 
-        # Codificar a JPEG para multipart streaming
+        # Codificación JPEG para transmisión HTTP multipart
         ok, buffer = cv2.imencode('.jpg', frame)
         if not ok:
             continue
@@ -144,8 +153,12 @@ def video_feed():
     return Response(flujo_video(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
-    print("\nTransmisión activa en: http://localhost:5000\n")
+    print("\n=======================================================")
+    print(" Transmision activa. Abre tu navegador en Windows y entra a:")
+    print(" http://localhost:5000")
+    print("=======================================================\n")
     app.run(host='0.0.0.0', port=5000, threaded=True)
+EOF
 ```
 
 ---
@@ -156,6 +169,8 @@ if __name__ == '__main__':
 ```bash
 python ~/visor_web_camara.py
 ```
+En la terminal debe verse el mensaje:
+`* Running on [http://127.0.0.1:5000](http://127.0.0.1:5000)`
 
 ### 2. Visualización en navegador
 Abre Chrome, Edge o Firefox en Windows e ingresa a:
@@ -166,5 +181,11 @@ http://localhost:5000
 ### 3. Verificar captura en Windows
 Detén el servidor con `Ctrl + C` y abre la carpeta de capturas:
 ```bash
+explorer.exe capture
+```
+Abre `captura_cajon_000.jpg` con el visor de imágenes de Windows y confirma que mide $640 \times 480$ píxeles.
+
+
+
 explorer.exe capture
 ```
