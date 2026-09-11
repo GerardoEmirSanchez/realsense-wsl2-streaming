@@ -8,7 +8,7 @@ Guía paso a paso para limpiar el entorno, reiniciar a cero y replicar todo el p
 1. [Fase 0: Limpieza total para prueba desde cero](#fase-0-limpieza-total-para-prueba-desde-cero)
 2. [Fase 1: Configuración en Windows (Host)](#fase-1-configuración-en-windows-host)
 3. [Fase 2: Configuración en Ubuntu (WSL2)](#fase-2-configuración-en-ubuntu-wsl2)
-4. [Fase 3: Script de Captura y Streaming (`visor_web_camara.py`)](#fase-3-script-de-captura-y-streaming-visor_web_camarapy)
+4. [Fase 3: Scripts de Captura y Streaming](#fase-3-scripts)
 5. [Fase 4: Ejecución y Validación](#fase-4-ejecución-y-validación)
 6. [Fase 5: Protocolo de Arranque tras Reinicio y Reconexión Rápida](#fase-5-protocolo-de-arranque-tras-reinicio-y-reconexión-rápida)
 7. [Fase 6: Solución a Problemas Frecuentes (Troubleshooting)](#fase-6-solución-a-problemas-frecuentes-troubleshooting)
