@@ -217,7 +217,7 @@ python ~/visor_web_camara.py
 python ~/s1_realsense_pixeles.py
 ```
 ```
-python ~/s1_mini_retos.py
+python ~/s1_mini_retos_estudiantes.py
 ```
 
 ## Fase 6: Solución a Problemas Frecuentes (Troubleshooting)
