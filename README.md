@@ -208,8 +208,18 @@ Al reconectar la cámara, Linux crea nodos de hardware nuevos en `/dev/video*`. 
 source ~/vision_env/bin/activate
 sudo chmod 666 /dev/video* 2>/dev/null
 sudo chmod -R 777 /dev/bus/usb/ 2>/dev/null
+```
+Codigo:
+```
 python ~/visor_web_camara.py
 ```
+```
+python ~/s1_realsense_pixeles.py
+```
+```
+python ~/s1_mini_retos.py
+```
+
 ## Fase 6: Solución a Problemas Frecuentes (Troubleshooting)
 
 ### Error: `usbipd: error: There is no WSL 2 distribution running`
