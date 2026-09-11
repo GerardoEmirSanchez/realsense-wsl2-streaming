@@ -165,7 +165,7 @@ EOF
 
 
 
-### Miniretos (`s1_realsense_pixeles.py`)
+### Código_01 (`s1_realsense_pixeles.py`)
 
 Con el entorno virtual activo (`vision_env`), genera el script ejecutando el siguiente bloque en la terminal:
 
