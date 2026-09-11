@@ -194,6 +194,9 @@ whoami
 Con la terminal de Ubuntu abierta en pantalla, abre **PowerShell como Administrador** en Windows y ejecuta:
 
 ```PowerShell
+usbipd list
+```
+```PowerShell   
 usbipd attach --wsl --busid <TU-BUSID> --auto-attach
 ```
 
